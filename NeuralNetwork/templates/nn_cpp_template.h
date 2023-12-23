@@ -1,4 +1,6 @@
 
+#pragma once
+
 class $Name$
 {
 private:
@@ -11,13 +13,19 @@ public:
    static const size_t kHiddenLayerSize = $HiddenLayerSize$;
    static const size_t kOutputLayerSize = $OutputLayerSize$;
 
-   enum Inputs
+   struct Inputs
    {
-      $InputsEnum$
+      enum
+      {
+         $InputsEnum$
+      };
    };
-   enum Outputs
+   struct Outputs
    {
-      $OutputsEnum$
+      enum
+      {
+         $OutputsEnum$
+      };
    };
 
 private:
@@ -42,7 +50,7 @@ public:
       return mInputs;
    }
 
-   inline const float* getOutputs()
+   inline float* getOutputs()
    {
       return mOutputs;
    }

@@ -1,104 +1,128 @@
 
+import nn
 import sys
 import json
 
-# Argument check
-if len(sys.argv) < 2:
-  print("Usage: nn_generate_cpp.py <name>")
-  exit(1)
 
-name = sys.argv[1]
+def getEnumString(stringArray):
+  enumString = ""
 
-# Load data from the description file
-jsonFilePath = name + "/nn.json"
-jsonFile = open(jsonFilePath)
-jsonData = json.load(jsonFile)
+  for stringEntry in stringArray:
+    if enumString != "":
+      enumString += ",\n         "
+    
+    enumString += "k" + stringEntry
 
-inputs = jsonData["Inputs"]
-hiddenLayerSize = jsonData["HiddenLayerSize"]
-outputs = jsonData["Outputs"]
+  return enumString
 
-jsonFile.close()
 
-inputLayerSize = len(inputs)
-outputLayerSize = len(outputs)
+def getWeightsArrayString(network, layerIndex):
+  weightsArrayString = "{"
+  weightsArray = network.layers[layerIndex].get_weights()[0]
 
-# Load header template
-templateFilePath = "./templates/nn_cpp_template.h"
-templateFile = open(templateFilePath, "r")
-templateContent = templateFile.read()
-templateFile.close()
+  inputCount = len(weightsArray[0])
+  outputCount = len(weightsArray)
 
-# Replace variables
-generatedContent = templateContent.replace("$Name$", name)
-generatedContent = generatedContent.replace("$InputLayerSize$", str(inputLayerSize) + "u")
-generatedContent = generatedContent.replace("$HiddenLayerSize$", str(hiddenLayerSize) + "u")
-generatedContent = generatedContent.replace("$OutputLayerSize$", str(outputLayerSize) + "u")
+  for i in range(inputCount):
+    if i > 0:
+      weightsArrayString += ","
 
-inputsEnumString = ""
+    weightsArrayString += "\n   { "
 
-for input in inputs:
-  if inputsEnumString != "":
-    inputsEnumString += ",\n      "
-  
-  inputsEnumString += "k" + input
+    for j in range(outputCount):
+      if j > 0:
+        weightsArrayString += ", "
 
-generatedContent = generatedContent.replace("$InputsEnum$", inputsEnumString)
+      weightsArrayString += str(weightsArray[j][i]) + "f"
 
-outputsEnumString = ""
+    weightsArrayString += " }"
 
-for output in outputs:
-  if outputsEnumString != "":
-    outputsEnumString += ",\n      "
-  
-  outputsEnumString += "k" + output
+  weightsArrayString += "\n}"
+  return weightsArrayString
 
-generatedContent = generatedContent.replace("$OutputsEnum$", outputsEnumString)
 
-# Generate header file
-generatedFilePath = name + "/" + name + ".h"
-generatedFile = open(generatedFilePath, "w")
-generatedFile.write(generatedContent)
-generatedFile.close()
+def getBiasesArrayString(network, layerIndex):
+  biasesArrayString = "{"
+  biasesArray = network.layers[layerIndex].get_weights()[1]
 
-# Load source template
-templateFilePath = "./templates/nn_cpp_template.cpp"
-templateFile = open(templateFilePath, "r")
-templateContent = templateFile.read()
-templateFile.close()
+  for i in range(len(biasesArray)):
+    if i > 0:
+      biasesArrayString += ", "
 
-# Replace variables
-generatedContent = templateContent.replace("$Name$", name)
-generatedContent = generatedContent.replace("$InputLayerSize$", str(inputLayerSize) + "u")
-generatedContent = generatedContent.replace("$HiddenLayerSize$", str(hiddenLayerSize) + "u")
-generatedContent = generatedContent.replace("$OutputLayerSize$", str(outputLayerSize) + "u")
+    biasesArrayString += "\n   " + str(biasesArray[i]) + "f"
 
-hiddenLayerWeights = "{"
-hiddenLayerWeights += "\n   0.0f" #TODO
-hiddenLayerWeights += "\n}"
+  biasesArrayString += "\n}"
+  return biasesArrayString
 
-generatedContent = generatedContent.replace("$HiddenLayerWeights$", hiddenLayerWeights)
 
-hiddenLayerBiases = "{"
-hiddenLayerBiases += "\n   0.0f" #TODO
-hiddenLayerBiases += "\n}"
+if __name__ == "__main__":
+  # Argument check
+  if len(sys.argv) < 2:
+    print("Usage: nn_generate_cpp.py <name>")
+    exit(1)
 
-generatedContent = generatedContent.replace("$HiddenLayerBiases$", hiddenLayerBiases)
+  name = sys.argv[1]
+  network = nn.createNetwork(name)
 
-outputLayerWeights = "{"
-outputLayerWeights += "\n   0.0f" #TODO
-outputLayerWeights += "\n}"
+  # Load data from the description file
+  jsonFilePath = name + "/nn.json"
+  jsonFile = open(jsonFilePath)
+  jsonData = json.load(jsonFile)
 
-generatedContent = generatedContent.replace("$OutputLayerWeights$", outputLayerWeights)
+  inputs = jsonData["Inputs"]
+  hiddenLayerSize = jsonData["HiddenLayerSize"]
+  outputs = jsonData["Outputs"]
 
-outputLayerBiases = "{"
-outputLayerBiases += "\n   0.0f" #TODO
-outputLayerBiases += "\n}"
+  jsonFile.close()
 
-generatedContent = generatedContent.replace("$OutputLayerBiases$", outputLayerBiases)
+  inputLayerSize = len(inputs)
+  outputLayerSize = len(outputs)
 
-# Generate source file
-generatedFilePath = name + "/" + name + ".cpp"
-generatedFile = open(generatedFilePath, "w")
-generatedFile.write(generatedContent)
-generatedFile.close()
+  # Load header template
+  templateFilePath = "./templates/nn_cpp_template.h"
+  templateFile = open(templateFilePath, "r")
+  templateContent = templateFile.read()
+  templateFile.close()
+
+  # Replace variables
+  generatedContent = templateContent.replace("$Name$", name)
+  generatedContent = generatedContent.replace("$InputLayerSize$", str(inputLayerSize) + "u")
+  generatedContent = generatedContent.replace("$HiddenLayerSize$", str(hiddenLayerSize) + "u")
+  generatedContent = generatedContent.replace("$OutputLayerSize$", str(outputLayerSize) + "u")
+
+  inputsEnumString = getEnumString(inputs)
+  generatedContent = generatedContent.replace("$InputsEnum$", inputsEnumString)
+
+  outputsEnumString = getEnumString(outputs)
+  generatedContent = generatedContent.replace("$OutputsEnum$", outputsEnumString)
+
+  # Generate header file
+  generatedFilePath = name + "/" + name + ".h"
+  generatedFile = open(generatedFilePath, "w")
+  generatedFile.write(generatedContent)
+  generatedFile.close()
+
+  # Load source template
+  templateFilePath = "./templates/nn_cpp_template.cpp"
+  templateFile = open(templateFilePath, "r")
+  templateContent = templateFile.read()
+  templateFile.close()
+
+  # Replace variables
+  generatedContent = templateContent.replace("$Name$", name)
+
+  hiddenLayerWeightsString = getWeightsArrayString(network, 0)
+  generatedContent = generatedContent.replace("$HiddenLayerWeights$", hiddenLayerWeightsString)
+  hiddenLayerBiasesString = getBiasesArrayString(network, 0)
+  generatedContent = generatedContent.replace("$HiddenLayerBiases$", hiddenLayerBiasesString)
+
+  outputLayerWeightsString = getWeightsArrayString(network, 1)
+  generatedContent = generatedContent.replace("$OutputLayerWeights$", outputLayerWeightsString)
+  outputLayerBiasesString = getBiasesArrayString(network, 1)
+  generatedContent = generatedContent.replace("$OutputLayerBiases$", outputLayerBiasesString)
+
+  # Generate source file
+  generatedFilePath = name + "/" + name + ".cpp"
+  generatedFile = open(generatedFilePath, "w")
+  generatedFile.write(generatedContent)
+  generatedFile.close()

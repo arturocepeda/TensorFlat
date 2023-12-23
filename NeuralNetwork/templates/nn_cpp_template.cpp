@@ -49,12 +49,12 @@ void $Name$::predict()
    }
 }
 
-const float $Name$::kHiddenLayerWeights[$HiddenLayerSize$][$InputLayerSize$] =
+const float $Name$::kHiddenLayerWeights[kHiddenLayerSize][kInputLayerSize] =
 $HiddenLayerWeights$;
-const float $Name$::kHiddenLayerBiases[$HiddenLayerSize$] =
+const float $Name$::kHiddenLayerBiases[kHiddenLayerSize] =
 $HiddenLayerBiases$;
 
-const float $Name$::kOutputLayerWeights[$OutputLayerSize$][$HiddenLayerSize$] =
+const float $Name$::kOutputLayerWeights[kOutputLayerSize][kHiddenLayerSize] =
 $OutputLayerWeights$;
-const float $Name$::kOutputLayerBiases[$OutputLayerSize$] =
+const float $Name$::kOutputLayerBiases[kOutputLayerSize] =
 $OutputLayerBiases$;
