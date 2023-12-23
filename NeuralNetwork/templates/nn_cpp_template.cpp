@@ -3,7 +3,12 @@
 
 #include <cmath>
 #include <cstdio>
-#include <fstream>
+#include <iomanip>
+
+
+static const size_t kFilePathMaxSize = 256u;
+static const int kFileFloatPrecision = 5;
+
 
 float $Name$::activationSigmoid(float pValue)
 {
@@ -18,6 +23,7 @@ float $Name$::activationLeakyReLU(float pValue)
    static const float kAlpha = 0.01f;
    return pValue > 0.0f ? pValue : (pValue * kAlpha);
 }
+
 
 $Name$::$Name$()
    : mHiddenLayerActivation(activationLeakyReLU)
@@ -55,10 +61,67 @@ void $Name$::predict()
    }
 }
 
+void $Name$::captureStart(const char* pInputsDirectory)
+{
+   char inputsFilePath[kFilePathMaxSize];
+   snprintf(inputsFilePath, kFilePathMaxSize, "%s_inputs_", pInputsDirectory);
+
+   mInputsStream = std::ofstream(inputsFilePath);
+
+   if(mInputsStream.is_open())
+   {
+      mInputsStream << std::fixed << std::showpoint << std::setprecision(kFileFloatPrecision);
+   }
+
+   char outputsFilePath[kFilePathMaxSize];
+   snprintf(outputsFilePath, kFilePathMaxSize, "%s_outputs_", pInputsDirectory);
+
+   mOutputsStream = std::ofstream(outputsFilePath);
+
+   if(mOutputsStream.is_open())
+   {
+      mOutputsStream << std::fixed << std::showpoint << std::setprecision(kFileFloatPrecision);
+   }
+}
+
+void $Name$::captureSample()
+{
+   if(mInputsStream.is_open())
+   {
+      for(size_t inputIndex = 0u; inputIndex < kInputLayerSize; inputIndex++)
+      {
+         mInputsStream << mInputs[inputIndex] << " ";
+      }
+
+      mInputsStream << "\n";
+   }
+
+   if(mOutputsStream.is_open())
+   {
+      for(size_t outputIndex = 0u; outputIndex < kOutputLayerSize; outputIndex++)
+      {
+         mOutputsStream << mOutputs[outputIndex] << " ";
+      }
+
+      mOutputsStream << "\n";
+   }
+}
+
+void $Name$::captureEnd()
+{
+   if(mInputsStream.is_open())
+   {
+      mInputsStream.close();
+   }
+   
+   if(mOutputsStream.is_open())
+   {
+      mOutputsStream.close();
+   }
+}
+
 void $Name$::test(const char* pInputsDirectory)
 {
-   static const size_t kFilePathMaxSize = 256u;
-
    char inputsFilePath[kFilePathMaxSize];
    snprintf(inputsFilePath, kFilePathMaxSize, "%s_inputs_", pInputsDirectory);
 
@@ -69,10 +132,10 @@ void $Name$::test(const char* pInputsDirectory)
       return;
    }
 
-   char outputsFilePath[kFilePathMaxSize];
-   snprintf(outputsFilePath, kFilePathMaxSize, "%s_prediction_cpp_", pInputsDirectory);
+   char predictionFilePath[kFilePathMaxSize];
+   snprintf(predictionFilePath, kFilePathMaxSize, "%s_prediction_cpp_", pInputsDirectory);
 
-   std::ofstream predictionFile(outputsFilePath);
+   std::ofstream predictionFile(predictionFilePath);
 
    if(!predictionFile.is_open())
    {
@@ -80,7 +143,7 @@ void $Name$::test(const char* pInputsDirectory)
       return;
    }
 
-   predictionFile << std::fixed << std::showpoint;
+   predictionFile << std::fixed << std::showpoint << std::setprecision(kFileFloatPrecision);
 
    while(!inputsFile.eof())
    {
@@ -99,8 +162,8 @@ void $Name$::test(const char* pInputsDirectory)
       predictionFile << "\n";
    }
 
-   predictionFile.close();
    inputsFile.close();
+   predictionFile.close();
 }
 
 const float $Name$::kHiddenLayerWeights[kHiddenLayerSize][kInputLayerSize] =

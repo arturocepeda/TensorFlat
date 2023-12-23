@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <fstream>
+
 class $Name$
 {
 private:
@@ -42,6 +44,9 @@ private:
    float mHiddenLayerValues[kHiddenLayerSize];
    float mOutputs[kOutputLayerSize];
 
+   std::ofstream mInputsStream;
+   std::ofstream mOutputsStream;
+
 public:
    $Name$();
 
@@ -56,6 +61,10 @@ public:
    }
 
    void predict();
-   
+
+   void captureStart(const char* pInputsDirectory);
+   void captureSample();
+   void captureEnd();
+
    void test(const char* pInputsDirectory);
 };
