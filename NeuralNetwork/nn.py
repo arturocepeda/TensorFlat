@@ -14,8 +14,8 @@ kOutputLayerActivation = keras.layers.LeakyReLU(alpha=kLeakyReLUAlpha)
 
 kKernelInitializer = "he_normal"
 
-def createNetwork(name):
-  # Load data from the description file
+
+def loadNetworkDescription(name):
   jsonFilePath = name + "/nn.json"
   jsonFile = open(jsonFilePath)
   jsonData = json.load(jsonFile)
@@ -26,12 +26,18 @@ def createNetwork(name):
 
   jsonFile.close()
 
+  return inputs, hiddenLayerSize, outputs
+
+
+def createNetwork(name):
+  # Load data from the description file
+  inputs, hiddenLayerSize, outputs = loadNetworkDescription(name)
+
   # Define the neural network models
   inputLayerSize = len(inputs)
   outputLayerSize = len(outputs)
 
   network = Sequential()
-
   network.add(Dense(hiddenLayerSize, input_dim=inputLayerSize, activation=kHiddenLayerActivation, kernel_initializer=kKernelInitializer))
   network.add(Dense(outputLayerSize, activation=kHiddenLayerActivation, kernel_initializer=kKernelInitializer))
   
