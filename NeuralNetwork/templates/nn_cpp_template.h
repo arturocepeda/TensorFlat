@@ -56,4 +56,6 @@ public:
    }
 
    void predict();
+   
+   void test(const char* pInputsDirectory);
 };
