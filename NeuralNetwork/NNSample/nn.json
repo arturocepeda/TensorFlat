@@ -1,0 +1,26 @@
+{
+  "Description": {
+    "Inputs": [
+      "InputParameter01",
+      "InputParameter02",
+      "InputParameter03",
+      "InputParameter04",
+      "InputParameter05",
+      "InputParameter06",
+      "InputParameter07",
+      "InputParameter08"
+    ],
+    "HiddenLayerSize": 16,
+    "HiddenLayerActivation": "LeakyReLU",
+    "Outputs": [
+      "OutputValue01",
+      "OutputValue02"
+    ],
+    "OutputLayerActivation": "LeakyReLU"
+  },
+  "Training": {
+    "TestSetRatio": 0.3,
+    "LearningRate": 0.001,
+    "Epochs": 100
+  }
+}
