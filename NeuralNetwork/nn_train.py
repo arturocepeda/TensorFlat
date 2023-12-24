@@ -4,8 +4,7 @@ import sys
 import pandas
 import matplotlib.pyplot as pyplot
 
-from keras.optimizer_v2.adam import Adam
-from keras.optimizer_experimental.sgd import SGD
+from keras.optimizers import Adam
 
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
