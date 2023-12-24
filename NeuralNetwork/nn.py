@@ -15,23 +15,37 @@ kOutputLayerActivation = keras.layers.LeakyReLU(alpha=kLeakyReLUAlpha)
 kKernelInitializer = "he_normal"
 
 
-def loadNetworkDescription(name):
+def loadNetworkDescriptionData(name):
   jsonFilePath = name + "/nn.json"
   jsonFile = open(jsonFilePath)
   jsonData = json.load(jsonFile)
   
-  inputs = jsonData["Inputs"]
-  hiddenLayerSize = jsonData["HiddenLayerSize"]
-  outputs = jsonData["Outputs"]
+  descriptionData = jsonData["Description"]
 
   jsonFile.close()
 
-  return inputs, hiddenLayerSize, outputs
+  return descriptionData
+
+
+def loadNetworkTrainingParameters(name):
+  jsonFilePath = name + "/nn.json"
+  jsonFile = open(jsonFilePath)
+  jsonData = json.load(jsonFile)
+  
+  trainingParameters = jsonData["Training"]
+
+  jsonFile.close()
+
+  return trainingParameters
 
 
 def createNetwork(name):
   # Load data from the description file
-  inputs, hiddenLayerSize, outputs = loadNetworkDescription(name)
+  descriptionData = loadNetworkDescriptionData(name)
+
+  inputs = descriptionData["Inputs"]
+  hiddenLayerSize = descriptionData["HiddenLayerSize"]
+  outputs = descriptionData["Outputs"]
 
   # Define the neural network models
   inputLayerSize = len(inputs)
@@ -39,7 +53,7 @@ def createNetwork(name):
 
   network = Sequential()
   network.add(Dense(hiddenLayerSize, input_dim=inputLayerSize, activation=kHiddenLayerActivation, kernel_initializer=kKernelInitializer))
-  network.add(Dense(outputLayerSize, activation=kHiddenLayerActivation, kernel_initializer=kKernelInitializer))
+  network.add(Dense(outputLayerSize, activation=kOutputLayerActivation, kernel_initializer=kKernelInitializer))
   
   # Load the weights, if available
   for layerIndex in range(len(network.layers)):

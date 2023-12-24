@@ -16,18 +16,19 @@ kSavePrediction = False
 kPlotTrainingHistoryAccuracy = True
 kPlotTrainingHistoryLoss = True
 
-# Training configuration
-kTestSetRatio = 0.3
-
 # Argument check
-if len(sys.argv) < 4:
-  print("Usage: nn_train.py <name> <trainingLearningRate> <trainingEpochs>")
+if len(sys.argv) < 2:
+  print("Usage: nn_train.py <name>")
   exit(1)
 
 name = sys.argv[1]
 
 # Define the neural network models
-inputs, hiddenLayerSize, outputs = nn.loadNetworkDescription(name)
+descriptionData = nn.loadNetworkDescriptionData(name)
+
+inputs = descriptionData["Inputs"]
+outputs = descriptionData["Outputs"]
+
 inputLayerSize = len(inputs)
 outputLayerSize = len(outputs)
 
@@ -54,22 +55,27 @@ if kPrintDataSet:
     
   input("Press Enter to continue...")
 
+# Load the training parameters
+trainingParameters = nn.loadNetworkTrainingParameters(name)
+
+testSetRatio = trainingParameters["TestSetRatio"]
+trainingLearningRate = trainingParameters["LearningRate"]
+trainingEpochs = trainingParameters["Epochs"]
+
 # Shuffle the data
 inputs, outputs = shuffle(inputData, outputData)
 
 # Split the data
-inputsTrain, inputsTest, outputsTrain, outputsTest = train_test_split(inputData, outputData, test_size=kTestSetRatio)
+inputsTrain, inputsTest, outputsTrain, outputsTest = train_test_split(inputData, outputData, test_size=testSetRatio)
 
 # Create the neural network
 network = nn.createNetwork(name)
 print(network.summary())
 
-trainingLearningRate = float(sys.argv[2])
 opt = Adam(learning_rate=trainingLearningRate)
 network.compile(loss="mean_squared_error", optimizer=opt, metrics=["accuracy"])
 
 # Train the neural network
-trainingEpochs = int(sys.argv[3])
 history = network.fit(inputsTrain, outputsTrain, validation_data=(inputsTest,outputsTest), epochs=trainingEpochs)
 
 # Save the weights

@@ -1,7 +1,6 @@
 
 import nn
 import sys
-import json
 
 
 def getEnumString(stringArray):
@@ -65,15 +64,11 @@ if __name__ == "__main__":
   network = nn.createNetwork(name)
 
   # Load data from the description file
-  jsonFilePath = name + "/nn.json"
-  jsonFile = open(jsonFilePath)
-  jsonData = json.load(jsonFile)
+  descriptionData = nn.loadNetworkDescriptionData(name)
 
-  inputs = jsonData["Inputs"]
-  hiddenLayerSize = jsonData["HiddenLayerSize"]
-  outputs = jsonData["Outputs"]
-
-  jsonFile.close()
+  inputs = descriptionData["Inputs"]
+  hiddenLayerSize = descriptionData["HiddenLayerSize"]
+  outputs = descriptionData["Outputs"]
 
   inputLayerSize = len(inputs)
   outputLayerSize = len(outputs)
