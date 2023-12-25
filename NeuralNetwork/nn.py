@@ -55,31 +55,25 @@ def createNetwork(name):
   network.add(Dense(hiddenLayerSize, input_dim=inputLayerSize, activation=kHiddenLayerActivation, kernel_initializer=kKernelInitializer))
   network.add(Dense(outputLayerSize, activation=kOutputLayerActivation, kernel_initializer=kKernelInitializer))
   
-  # Load the weights, if available
+  # Load weights and biases, if available
   for layerIndex in range(len(network.layers)):
-    weightsNP = numpy.empty(network.layers[layerIndex].get_weights()[0].shape)
     weightsFilePath = name + "/_layer" + str(layerIndex) + "_weights_"
-
-    if os.path.exists(weightsFilePath):
-      csvData = pandas.read_csv(weightsFilePath, sep=" ", header=None)
-      layerWeightsLength = len(network.layers[layerIndex].get_weights()[0])
-      layerWeights = csvData.iloc[:,:layerWeightsLength].values
-      
-      for x in range(layerWeightsLength):
-        for y in range(len(network.layers[layerIndex].get_weights()[0][x])):
-          weightsNP[x][y] = layerWeights[x][y]
-
-    biasNP = numpy.empty(network.layers[layerIndex].get_weights()[1].shape)
     biasesFilePath = name + "/_layer" + str(layerIndex) + "_bias_"
 
-    if os.path.exists(biasesFilePath):
-      csvData = pandas.read_csv(biasesFilePath, sep=" ", header=None)
-      layerBiasLength = len(network.layers[layerIndex].get_weights()[1])
-      layerBias = csvData.iloc[:,:layerBiasLength].values
+    if os.path.exists(weightsFilePath) and os.path.exists(biasesFilePath):
+      weightsNP = numpy.empty(network.layers[layerIndex].weights[0].shape)
+      layerWeights = pandas.read_csv(weightsFilePath, sep=" ", header=None).to_numpy()
+
+      for x in range(weightsNP.shape[0]):
+        for y in range(weightsNP.shape[1]):
+          weightsNP[x][y] = layerWeights[x][y]
+
+      biasNP = numpy.empty(network.layers[layerIndex].weights[1].shape)
+      layerBiases = pandas.read_csv(biasesFilePath, sep=" ", header=None).to_numpy()
     
-      for x in range(layerBiasLength):
-        biasNP[x] = layerBias[0][x]
-      
-    network.layers[layerIndex].set_weights(numpy.array([weightsNP, biasNP], dtype=object))
+      for x in range(biasNP.shape[0]):
+        biasNP[x] = layerBiases[0][x]
+
+      network.layers[layerIndex].set_weights(numpy.array([weightsNP, biasNP], dtype=object))
 
   return network
