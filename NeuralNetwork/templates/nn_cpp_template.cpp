@@ -26,8 +26,8 @@ float $Name$::activationLeakyReLU(float pValue)
 
 
 $Name$::$Name$()
-   : mHiddenLayerActivation(activationLeakyReLU)
-   , mOutputLayerActivation(activationLeakyReLU)
+   : mHiddenLayerActivation(activation$HiddenLayerActivation$)
+   , mOutputLayerActivation(activation$OutputLayerActivation$)
 {
    memset(mInputs, 0, sizeof(mInputs));
    memset(mHiddenLayerValues, 0, sizeof(mHiddenLayerValues));

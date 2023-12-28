@@ -70,6 +70,9 @@ if __name__ == "__main__":
   hiddenLayerSize = descriptionData["HiddenLayerSize"]
   outputs = descriptionData["Outputs"]
 
+  hiddenLayerActivation = descriptionData["HiddenLayerActivation"]
+  outputLayerActivation = descriptionData["OutputLayerActivation"]
+
   inputLayerSize = len(inputs)
   outputLayerSize = len(outputs)
 
@@ -105,6 +108,9 @@ if __name__ == "__main__":
 
   # Replace variables
   generatedContent = templateContent.replace("$Name$", name)
+
+  generatedContent = generatedContent.replace("$HiddenLayerActivation$", hiddenLayerActivation)
+  generatedContent = generatedContent.replace("$OutputLayerActivation$", outputLayerActivation)
 
   hiddenLayerWeightsString = getWeightsArrayString(network, 0)
   generatedContent = generatedContent.replace("$HiddenLayerWeights$", hiddenLayerWeightsString)
