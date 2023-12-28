@@ -8,9 +8,6 @@ import pandas
 from keras.models import Sequential
 from keras.layers import Dense
 
-kLeakyReLUAlpha = 0.01
-kLeakyReLU = keras.layers.LeakyReLU(alpha=kLeakyReLUAlpha)
-
 kKernelInitializer = "he_normal"
 
 def loadNetworkDescriptionData(name):
@@ -58,6 +55,9 @@ def createNetwork(name):
   outputLayerActivationDescription = descriptionData["OutputLayerActivation"]
   assertActivationDescription(outputLayerActivationDescription)
 
+  leakyReLUAlpha = descriptionData["LeakyReLUAlpha"]
+  leakyReLU = keras.layers.LeakyReLU(alpha=leakyReLUAlpha)
+
   # Define the neural network models
   inputLayerSize = len(inputs)
   outputLayerSize = len(outputs)
@@ -69,7 +69,7 @@ def createNetwork(name):
       hiddenLayerSize, input_dim=inputLayerSize, activation="relu", kernel_initializer=kKernelInitializer)
   elif hiddenLayerActivationDescription == "LeakyReLU":
     hiddenLayer = Dense(
-      hiddenLayerSize, input_dim=inputLayerSize, activation=kLeakyReLU, kernel_initializer=kKernelInitializer)
+      hiddenLayerSize, input_dim=inputLayerSize, activation=leakyReLU, kernel_initializer=kKernelInitializer)
   else:
     hiddenLayer = Dense(
       hiddenLayerSize, input_dim=inputLayerSize, activation="sigmoid", kernel_initializer=kKernelInitializer)
@@ -79,7 +79,7 @@ def createNetwork(name):
   if outputLayerActivationDescription == "ReLU":
     outputLayer = Dense(outputLayerSize, activation="relu", kernel_initializer=kKernelInitializer)
   elif outputLayerActivationDescription == "LeakyReLU":
-    outputLayer = Dense(outputLayerSize, activation=kLeakyReLU, kernel_initializer=kKernelInitializer)
+    outputLayer = Dense(outputLayerSize, activation=leakyReLU, kernel_initializer=kKernelInitializer)
   else:
     outputLayer = Dense(outputLayerSize, activation="sigmoid", kernel_initializer=kKernelInitializer)
 

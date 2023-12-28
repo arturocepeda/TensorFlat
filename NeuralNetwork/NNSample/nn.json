@@ -16,7 +16,8 @@
       "OutputValue01",
       "OutputValue02"
     ],
-    "OutputLayerActivation": "LeakyReLU"
+    "OutputLayerActivation": "LeakyReLU",
+    "LeakyReLUAlpha": 0.01
   },
   "Training": {
     "TestSetRatio": 0.3,

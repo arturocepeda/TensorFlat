@@ -73,6 +73,8 @@ if __name__ == "__main__":
   hiddenLayerActivation = descriptionData["HiddenLayerActivation"]
   outputLayerActivation = descriptionData["OutputLayerActivation"]
 
+  leakyReLUAlpha = descriptionData["LeakyReLUAlpha"]
+
   inputLayerSize = len(inputs)
   outputLayerSize = len(outputs)
 
@@ -108,6 +110,8 @@ if __name__ == "__main__":
 
   # Replace variables
   generatedContent = templateContent.replace("$Name$", name)
+
+  generatedContent = generatedContent.replace("$LeakyReLUAlpha$", str(leakyReLUAlpha))
 
   generatedContent = generatedContent.replace("$HiddenLayerActivation$", hiddenLayerActivation)
   generatedContent = generatedContent.replace("$OutputLayerActivation$", outputLayerActivation)
