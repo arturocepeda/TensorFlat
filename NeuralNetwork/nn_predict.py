@@ -1,5 +1,6 @@
 
-import nn
+import imports.nn as nn
+
 import sys
 import pandas
 
