@@ -62,9 +62,9 @@ public:
 
    void predict();
 
-   void captureStart(const char* pInputsDirectory);
+   void captureStart(const char* pDataDirectory);
    void captureSample();
    void captureEnd();
 
-   void test(const char* pInputsDirectory);
+   void test(const char* pDataDirectory);
 };

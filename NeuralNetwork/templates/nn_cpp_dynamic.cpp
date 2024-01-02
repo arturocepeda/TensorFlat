@@ -40,10 +40,10 @@ $Name$::$Name$()
    memset(mOutputs, 0, sizeof(mOutputs));
 }
 
-void $Name$::loadWeightsAndBiases(const char* pInputsDirectory)
+void $Name$::loadWeightsAndBiases(const char* pDataDirectory)
 {
    char filePath[kFilePathMaxSize];
-   snprintf(filePath, kFilePathMaxSize, "%s_layer0_weights_", pInputsDirectory);
+   snprintf(filePath, kFilePathMaxSize, "%s_layer0_weights_", pDataDirectory);
 
    std::ifstream file(filePath);
 
@@ -60,7 +60,7 @@ void $Name$::loadWeightsAndBiases(const char* pInputsDirectory)
       file.close();
    }
 
-   snprintf(filePath, kFilePathMaxSize, "%s_layer0_biases_", pInputsDirectory);   
+   snprintf(filePath, kFilePathMaxSize, "%s_layer0_biases_", pDataDirectory);   
    file = std::ifstream(filePath);
 
    if(file.is_open())
@@ -73,7 +73,7 @@ void $Name$::loadWeightsAndBiases(const char* pInputsDirectory)
       file.close();
    }
 
-   snprintf(filePath, kFilePathMaxSize, "%s_layer1_weights_", pInputsDirectory);
+   snprintf(filePath, kFilePathMaxSize, "%s_layer1_weights_", pDataDirectory);
    file = std::ifstream(filePath);
 
    if(file.is_open())
@@ -89,7 +89,7 @@ void $Name$::loadWeightsAndBiases(const char* pInputsDirectory)
       file.close();
    }
 
-   snprintf(filePath, kFilePathMaxSize, "%s_layer1_biases_", pInputsDirectory);   
+   snprintf(filePath, kFilePathMaxSize, "%s_layer1_biases_", pDataDirectory);   
    file = std::ifstream(filePath);
 
    if(file.is_open())
@@ -130,10 +130,10 @@ void $Name$::predict()
    }
 }
 
-void $Name$::captureStart(const char* pInputsDirectory)
+void $Name$::captureStart(const char* pDataDirectory)
 {
    char inputsFilePath[kFilePathMaxSize];
-   snprintf(inputsFilePath, kFilePathMaxSize, "%s_inputs_", pInputsDirectory);
+   snprintf(inputsFilePath, kFilePathMaxSize, "%s_inputs_", pDataDirectory);
 
    mInputsStream = std::ofstream(inputsFilePath);
 
@@ -143,7 +143,7 @@ void $Name$::captureStart(const char* pInputsDirectory)
    }
 
    char outputsFilePath[kFilePathMaxSize];
-   snprintf(outputsFilePath, kFilePathMaxSize, "%s_outputs_", pInputsDirectory);
+   snprintf(outputsFilePath, kFilePathMaxSize, "%s_outputs_", pDataDirectory);
 
    mOutputsStream = std::ofstream(outputsFilePath);
 
@@ -189,10 +189,10 @@ void $Name$::captureEnd()
    }
 }
 
-void $Name$::test(const char* pInputsDirectory)
+void $Name$::test(const char* pDataDirectory)
 {
    char inputsFilePath[kFilePathMaxSize];
-   snprintf(inputsFilePath, kFilePathMaxSize, "%s_inputs_", pInputsDirectory);
+   snprintf(inputsFilePath, kFilePathMaxSize, "%s_inputs_", pDataDirectory);
 
    std::ifstream inputsFile(inputsFilePath);
    
@@ -202,7 +202,7 @@ void $Name$::test(const char* pInputsDirectory)
    }
 
    char predictionFilePath[kFilePathMaxSize];
-   snprintf(predictionFilePath, kFilePathMaxSize, "%s_prediction_cpp_", pInputsDirectory);
+   snprintf(predictionFilePath, kFilePathMaxSize, "%s_prediction_cpp_", pDataDirectory);
 
    std::ofstream predictionFile(predictionFilePath);
 
