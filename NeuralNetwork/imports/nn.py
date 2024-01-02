@@ -88,7 +88,7 @@ def createNetwork(name):
   # Load weights and biases, if available
   for layerIndex in range(len(network.layers)):
     weightsFilePath = name + "/_layer" + str(layerIndex) + "_weights_"
-    biasesFilePath = name + "/_layer" + str(layerIndex) + "_bias_"
+    biasesFilePath = name + "/_layer" + str(layerIndex) + "_biases_"
 
     if os.path.exists(weightsFilePath) and os.path.exists(biasesFilePath):
       weightsNP = numpy.empty(network.layers[layerIndex].weights[0].shape)

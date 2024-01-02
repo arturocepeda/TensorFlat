@@ -10,5 +10,5 @@ if len(sys.argv) < 2:
 
 name = sys.argv[1]
 
-nn_cpp.generateHeaderFile(name, "nn_cpp_template.h")
-nn_cpp.generateSourceFile(name, "nn_cpp_template.cpp")
+nn_cpp.generateHeaderFile(name, "nn_cpp_static.h")
+nn_cpp.generateSourceFile(name, "nn_cpp_static.cpp")

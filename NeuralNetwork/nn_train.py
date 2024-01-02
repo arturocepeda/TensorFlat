@@ -93,7 +93,7 @@ if kSaveWeights:
         
     bias = network.layers[layerIndex].get_weights()[1]
     
-    with open(name + "/_layer" + str(layerIndex) + "_bias_", "w") as file:
+    with open(name + "/_layer" + str(layerIndex) + "_biases_", "w") as file:
       for i in range(len(bias)):
         file.write(str(bias[i]) + " ")
   
