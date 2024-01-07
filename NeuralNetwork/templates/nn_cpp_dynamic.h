@@ -50,11 +50,27 @@ private:
 public:
    $Name$();
 
+   inline float* getHiddenLayerWeights()
+   {
+      return mHiddenLayerWeights[0];
+   }
+   inline float* getHiddenLayerBiases()
+   {
+      return mHiddenLayerBiases;
+   }
+   inline float* getOutputLayerWeights()
+   {
+      return mOutputLayerWeights[0];
+   }
+   inline float* getOutputLayerBiases()
+   {
+      return mOutputLayerBiases;
+   }
+
    inline float* getInputs()
    {
       return mInputs;
    }
-
    inline float* getOutputs()
    {
       return mOutputs;

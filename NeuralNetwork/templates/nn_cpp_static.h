@@ -54,7 +54,6 @@ public:
    {
       return mInputs;
    }
-
    inline float* getOutputs()
    {
       return mOutputs;
