@@ -49,9 +49,9 @@ void $Name$::loadWeightsAndBiases(const char* pDataDirectory)
 
    if(file.is_open())
    {
-      for(size_t hiddenIndex = 0u; hiddenIndex < kHiddenLayerSize; hiddenIndex++)
+      for(size_t inputIndex = 0u; inputIndex < kInputLayerSize; inputIndex++)
       {
-         for(size_t inputIndex = 0u; inputIndex < kInputLayerSize; inputIndex++)
+         for(size_t hiddenIndex = 0u; hiddenIndex < kHiddenLayerSize; hiddenIndex++)
          {
             file >> mHiddenLayerWeights[hiddenIndex][inputIndex];
          }
@@ -78,9 +78,9 @@ void $Name$::loadWeightsAndBiases(const char* pDataDirectory)
 
    if(file.is_open())
    {
-      for(size_t outputIndex = 0u; outputIndex < kOutputLayerSize; outputIndex++)
+      for(size_t hiddenIndex = 0u; hiddenIndex < kHiddenLayerSize; hiddenIndex++)
       {
-         for(size_t hiddenIndex = 0u; hiddenIndex < kHiddenLayerSize; hiddenIndex++)
+         for(size_t outputIndex = 0u; outputIndex < kOutputLayerSize; outputIndex++)
          {
             file >> mOutputLayerWeights[outputIndex][hiddenIndex];
          }
