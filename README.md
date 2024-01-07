@@ -136,7 +136,7 @@ Alternatively, the data can be gathered externally, as long as it matches the ex
 
 To train the network and generate a C++ class with the trained version, you can follow these steps:
 
-1. Collect the training data. It can be either by capturing data directly from within the application, using the (untrained) generated class, or externally.
+1. Collect the training data. It can be either by capturing data directly from within the application, using the (still untrained) generated class, or externally.
 
 2. Set the desired training parameters in the `nn.json` file.
 
@@ -146,7 +146,7 @@ To train the network and generate a C++ class with the trained version, you can 
 
 5. Get the C++ class generated:  `python nn_generate_cpp_static.py ./NNSample/`
 
-6. (Optional) Call the `test` method from your application to have the C++ network class generate a file with the predicted outputs (`_prediction_cpp_`), again calculated from the `_inputs_` file, to make sure the match the results from the script.
+6. (Optional) Call the `test` method from your application to have the C++ network class generate a file with the predicted outputs (`_prediction_cpp_`), again calculated from the `_inputs_` file, to make sure that they match the results from the script.
 
 
 #### Dynamic version
