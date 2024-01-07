@@ -1,5 +1,6 @@
 {
   "Description": {
+    "Name": "NNSample",
     "Inputs": [
       "InputParameter01",
       "InputParameter02",

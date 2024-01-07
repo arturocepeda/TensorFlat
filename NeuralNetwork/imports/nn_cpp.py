@@ -53,8 +53,10 @@ def getBiasesArrayString(network, layerIndex):
   return biasesArrayString
 
 
-def generateHeaderFile(name, templateFileName):
-  descriptionData = nn.loadNetworkDescriptionData(name)
+def generateHeaderFile(data_directory, templateFileName):
+  descriptionData = nn.loadNetworkDescriptionData(data_directory)
+
+  name = descriptionData["Name"]
 
   inputs = descriptionData["Inputs"]
   hiddenLayerSize = descriptionData["HiddenLayerSize"]
@@ -82,21 +84,23 @@ def generateHeaderFile(name, templateFileName):
   generatedContent = generatedContent.replace("$OutputsEnum$", outputsEnumString)
 
   # Generate header file
-  generatedFilePath = name + "/" + name + ".h"
+  generatedFilePath = data_directory + name + ".h"
   generatedFile = open(generatedFilePath, "w")
   generatedFile.write(generatedContent)
   generatedFile.close()
 
 
-def generateSourceFile(name, templateFileName):
-  descriptionData = nn.loadNetworkDescriptionData(name)
+def generateSourceFile(data_directory, templateFileName):
+  descriptionData = nn.loadNetworkDescriptionData(data_directory)
+  
+  name = descriptionData["Name"]
 
   leakyReLUAlpha = descriptionData["LeakyReLUAlpha"]
 
   hiddenLayerActivation = descriptionData["HiddenLayerActivation"]
   outputLayerActivation = descriptionData["OutputLayerActivation"]
 
-  network = nn.createNetwork(name)
+  network = nn.createNetwork(data_directory)
 
   # Load source template
   templateFilePath = "./templates/" + templateFileName
@@ -123,7 +127,7 @@ def generateSourceFile(name, templateFileName):
   generatedContent = generatedContent.replace("$OutputLayerBiases$", outputLayerBiasesString)
 
   # Generate source file
-  generatedFilePath = name + "/" + name + ".cpp"
+  generatedFilePath = data_directory + name + ".cpp"
   generatedFile = open(generatedFilePath, "w")
   generatedFile.write(generatedContent)
   generatedFile.close()

@@ -5,10 +5,10 @@ import sys
 
 # Argument check
 if len(sys.argv) < 2:
-  print("Usage: nn_generate_cpp.py <name>")
+  print("Usage: nn_generate_cpp.py <data_directory>")
   exit(1)
 
-name = sys.argv[1]
+data_directory = sys.argv[1]
 
-nn_cpp.generateHeaderFile(name, "nn_cpp_dynamic.h")
-nn_cpp.generateSourceFile(name, "nn_cpp_dynamic.cpp")
+nn_cpp.generateHeaderFile(data_directory, "nn_cpp_dynamic.h")
+nn_cpp.generateSourceFile(data_directory, "nn_cpp_dynamic.cpp")
