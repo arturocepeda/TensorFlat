@@ -135,7 +135,7 @@ void $Name$::captureStart(const char* pDataDirectory)
    char inputsFilePath[kFilePathMaxSize];
    snprintf(inputsFilePath, kFilePathMaxSize, "%s_inputs_", pDataDirectory);
 
-   mInputsStream = std::ofstream(inputsFilePath);
+   mInputsStream = std::ofstream(inputsFilePath, std::ios_base::app);
 
    if(mInputsStream.is_open())
    {
@@ -145,7 +145,7 @@ void $Name$::captureStart(const char* pDataDirectory)
    char outputsFilePath[kFilePathMaxSize];
    snprintf(outputsFilePath, kFilePathMaxSize, "%s_outputs_", pDataDirectory);
 
-   mOutputsStream = std::ofstream(outputsFilePath);
+   mOutputsStream = std::ofstream(outputsFilePath, std::ios_base::app);
 
    if(mOutputsStream.is_open())
    {
