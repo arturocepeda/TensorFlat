@@ -2,6 +2,7 @@
 import imports.nn as nn
 
 import sys
+import os.path
 import math
 import pandas
 import matplotlib.pyplot as pyplot
@@ -23,10 +24,10 @@ if len(sys.argv) < 2:
   print("Usage: nn_train.py <data_directory>")
   exit(1)
 
-data_directory = sys.argv[1]
+dataDirectory = sys.argv[1]
 
 # Define the neural network models
-descriptionData = nn.loadNetworkDescriptionData(data_directory)
+descriptionData = nn.loadNetworkDescriptionData(dataDirectory)
 
 inputs = descriptionData["Inputs"]
 outputs = descriptionData["Outputs"]
@@ -35,8 +36,8 @@ inputLayerSize = len(inputs)
 outputLayerSize = len(outputs)
 
 # Load the input and the output data
-inputDataFilePath = data_directory + "_inputs_"
-outputDataFilePath = data_directory + "_outputs_"
+inputDataFilePath = os.path.join(dataDirectory, "_inputs_")
+outputDataFilePath = os.path.join(dataDirectory, "_outputs_")
 
 dataSetX = pandas.read_csv(inputDataFilePath, sep=" ", header=None)
 inputData = dataSetX.iloc[:,:inputLayerSize].values
@@ -58,7 +59,7 @@ if kPrintDataSet:
   input("Press Enter to continue...")
 
 # Load the training parameters
-trainingParameters = nn.loadNetworkTrainingParameters(data_directory)
+trainingParameters = nn.loadNetworkTrainingParameters(dataDirectory)
 
 testSetRatio = trainingParameters["TestSetRatio"]
 trainingLearningRate = trainingParameters["LearningRate"]
@@ -74,7 +75,7 @@ if math.isclose(testSetRatio, 0.0):
 inputsTrain, inputsTest, outputsTrain, outputsTest = train_test_split(inputData, outputData, test_size=testSetRatio)
 
 # Create the neural network
-network = nn.createNetwork(data_directory)
+network = nn.createNetwork(dataDirectory)
 print(network.summary())
 
 opt = Adam(learning_rate=trainingLearningRate)
@@ -88,7 +89,7 @@ if kSaveWeights:
   for layerIndex in range(len(network.layers)):
     weightsArray = network.layers[layerIndex].get_weights()[0]
     
-    with open(data_directory + "_layer" + str(layerIndex) + "_weights_", "w") as file:
+    with open(os.path.join(dataDirectory, "_layer" + str(layerIndex) + "_weights_"), "w") as file:
       for i in range(len(weightsArray)):
         for j in range(len(weightsArray[i])):
           file.write(str(weightsArray[i][j]) + " ")
@@ -97,7 +98,7 @@ if kSaveWeights:
         
     bias = network.layers[layerIndex].get_weights()[1]
     
-    with open(data_directory + "_layer" + str(layerIndex) + "_biases_", "w") as file:
+    with open(os.path.join(dataDirectory, "_layer" + str(layerIndex) + "_biases_"), "w") as file:
       for i in range(len(bias)):
         file.write(str(bias[i]) + " ")
   
@@ -105,7 +106,7 @@ if kSaveWeights:
 if kSavePrediction:
   prediction = network.predict(inputs)
   
-  with open(data_directory + "_prediction_after_training_", "w") as file:
+  with open(os.path.join(dataDirectory, "_prediction_after_training_"), "w") as file:
     for predictionSample in prediction:
       for value in predictionSample:
         file.write(str(value) + " ")

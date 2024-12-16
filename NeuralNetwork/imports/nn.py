@@ -10,8 +10,8 @@ from keras.layers import Dense
 
 kKernelInitializer = "he_normal"
 
-def loadNetworkDescriptionData(data_directory):
-  jsonFilePath = data_directory + "nn.json"
+def loadNetworkDescriptionData(dataDirectory):
+  jsonFilePath = os.path.join(dataDirectory, "nn.json")
   jsonFile = open(jsonFilePath)
   jsonData = json.load(jsonFile)
   
@@ -22,8 +22,8 @@ def loadNetworkDescriptionData(data_directory):
   return descriptionData
 
 
-def loadNetworkTrainingParameters(data_directory):
-  jsonFilePath = data_directory + "nn.json"
+def loadNetworkTrainingParameters(dataDirectory):
+  jsonFilePath = os.path.join(dataDirectory, "nn.json")
   jsonFile = open(jsonFilePath)
   jsonData = json.load(jsonFile)
   
@@ -42,9 +42,9 @@ def assertActivationDescription(description):
     "Unsupported activation function: '" + description + "'"
 
 
-def createNetwork(data_directory):
+def createNetwork(dataDirectory):
   # Load data from the description file
-  descriptionData = loadNetworkDescriptionData(data_directory)
+  descriptionData = loadNetworkDescriptionData(dataDirectory)
 
   inputs = descriptionData["Inputs"]
   hiddenLayerSize = descriptionData["HiddenLayerSize"]
@@ -87,8 +87,8 @@ def createNetwork(data_directory):
   
   # Load weights and biases, if available
   for layerIndex in range(len(network.layers)):
-    weightsFilePath = data_directory + "_layer" + str(layerIndex) + "_weights_"
-    biasesFilePath = data_directory + "_layer" + str(layerIndex) + "_biases_"
+    weightsFilePath = os.path.join(dataDirectory, "_layer" + str(layerIndex) + "_weights_")
+    biasesFilePath = os.path.join(dataDirectory, "_layer" + str(layerIndex) + "_biases_")
 
     if os.path.exists(weightsFilePath) and os.path.exists(biasesFilePath):
       weightsNP = numpy.empty(network.layers[layerIndex].weights[0].shape)
