@@ -2,6 +2,7 @@
 import imports.nn as nn
 
 import sys
+import math
 import pandas
 import matplotlib.pyplot as pyplot
 
@@ -67,6 +68,9 @@ trainingEpochs = trainingParameters["Epochs"]
 inputs, outputs = shuffle(inputData, outputData)
 
 # Split the data
+if math.isclose(testSetRatio, 0.0):
+  testSetRatio = None
+
 inputsTrain, inputsTest, outputsTrain, outputsTest = train_test_split(inputData, outputData, test_size=testSetRatio)
 
 # Create the neural network
