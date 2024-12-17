@@ -68,12 +68,6 @@ trainingEpochs = trainingParameters["Epochs"]
 # Shuffle the data
 inputs, outputs = shuffle(inputData, outputData)
 
-# Split the data
-if math.isclose(testSetRatio, 0.0):
-  testSetRatio = None
-
-inputsTrain, inputsTest, outputsTrain, outputsTest = train_test_split(inputData, outputData, test_size=testSetRatio)
-
 # Create the neural network
 network = nn.createNetwork(dataDirectory)
 print(network.summary())
@@ -82,7 +76,14 @@ opt = Adam(learning_rate=trainingLearningRate)
 network.compile(loss="mean_squared_error", optimizer=opt, metrics=["accuracy"])
 
 # Train the neural network
-history = network.fit(inputsTrain, outputsTrain, validation_data=(inputsTest,outputsTest), epochs=trainingEpochs)
+validationData = None
+trainTestSplit = not math.isclose(testSetRatio, 0.0)
+
+if trainTestSplit:
+  inputsTrain, inputsTest, outputsTrain, outputsTest = train_test_split(inputData, outputData, test_size=testSetRatio)
+  validationData = (inputsTest, outputsTest)
+
+history = network.fit(inputData, outputData, epochs=trainingEpochs, validation_data=validationData)
 
 # Save the weights
 if kSaveWeights:
@@ -116,18 +117,28 @@ if kSavePrediction:
 # Plot the training history data
 if kPlotTrainingHistoryAccuracy:
   pyplot.plot(history.history["accuracy"])
-  pyplot.plot(history.history["val_accuracy"])
+
+  if trainTestSplit:
+    pyplot.plot(history.history["val_accuracy"])
+    pyplot.legend(["Train", "Test"], loc="upper left")
+  else:
+    pyplot.legend(["Train"], loc="upper left")
+
   pyplot.title("Model accuracy")
   pyplot.ylabel("Accuracy")
   pyplot.xlabel("Epoch")
-  pyplot.legend(["Train", "Test"], loc="upper left")
   pyplot.show()
 
 if kPlotTrainingHistoryLoss:
   pyplot.plot(history.history["loss"])
-  pyplot.plot(history.history["val_loss"]) 
+
+  if trainTestSplit:
+    pyplot.plot(history.history["val_loss"])
+    pyplot.legend(["Train", "Test"], loc="upper left")
+  else:
+    pyplot.legend(["Train"], loc="upper left") 
+
   pyplot.title("Model loss") 
   pyplot.ylabel("Loss") 
   pyplot.xlabel("Epoch") 
-  pyplot.legend(["Train", "Test"], loc="upper left") 
   pyplot.show()
