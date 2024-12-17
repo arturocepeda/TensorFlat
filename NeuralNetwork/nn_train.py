@@ -104,7 +104,7 @@ if kSaveWeights:
   
 # Save the prediction
 if kSavePrediction:
-  prediction = network.predict(inputs)
+  prediction = network.predict(inputData)
   
   with open(os.path.join(dataDirectory, "_prediction_after_training_"), "w") as file:
     for predictionSample in prediction:
