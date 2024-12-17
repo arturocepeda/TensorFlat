@@ -104,6 +104,6 @@ def createNetwork(dataDirectory):
       for x in range(biasNP.shape[0]):
         biasNP[x] = layerBiases[0][x]
 
-      network.layers[layerIndex].set_weights(numpy.array([weightsNP, biasNP], dtype=object))
+      network.layers[layerIndex].set_weights([weightsNP, biasNP])
 
   return network
