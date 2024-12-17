@@ -1,0 +1,21 @@
+{
+  "Description": {
+    "Name": "XOR",
+    "Inputs": [
+      "Input1",
+      "Input2"
+    ],
+    "HiddenLayerSize": 2,
+    "HiddenLayerActivation": "ReLU",
+    "Outputs": [
+      "Output"
+    ],
+    "OutputLayerActivation": "Sigmoid",
+    "LeakyReLUAlpha": 0.01
+  },
+  "Training": {
+    "TestSetRatio": 0.0,
+    "LearningRate": 0.001,
+    "Epochs": 10000
+  }
+}
