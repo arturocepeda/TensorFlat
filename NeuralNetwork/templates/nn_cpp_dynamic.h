@@ -3,7 +3,11 @@
 
 #include <fstream>
 
-class $Name$
+#if !defined(TensorFlatAPI)
+# define TensorFlatAPI
+#endif
+
+class TensorFlatAPI $Name$
 {
 private:
    static float activationSigmoid(float pValue);
