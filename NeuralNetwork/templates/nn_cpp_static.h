@@ -10,6 +10,7 @@
 class TensorFlatAPI $Name$
 {
 private:
+   static float activationLinear(float pValue);
    static float activationSigmoid(float pValue);
    static float activationReLU(float pValue);
    static float activationLeakyReLU(float pValue);
