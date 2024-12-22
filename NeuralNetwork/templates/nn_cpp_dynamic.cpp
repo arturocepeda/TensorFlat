@@ -10,6 +10,10 @@ static const size_t kFilePathMaxSize = 256u;
 static const int kFileFloatPrecision = 5;
 
 
+float $Name$::activationLinear(float pValue)
+{
+   return pValue;
+}
 float $Name$::activationSigmoid(float pValue)
 {
    return 1.0f / (1.0f + expf(-pValue));

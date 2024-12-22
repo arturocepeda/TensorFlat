@@ -38,7 +38,8 @@ def assertActivationDescription(description):
   assert \
     description == "ReLU" or \
     description == "LeakyReLU" or \
-    description == "Sigmoid", \
+    description == "Sigmoid" or \
+    description == "Linear", \
     "Unsupported activation function: '" + description + "'"
 
 
@@ -70,9 +71,12 @@ def createNetwork(dataDirectory):
   elif hiddenLayerActivationDescription == "LeakyReLU":
     hiddenLayer = Dense(
       hiddenLayerSize, input_dim=inputLayerSize, activation=leakyReLU, kernel_initializer=kKernelInitializer)
-  else:
+  elif hiddenLayerActivationDescription == "Sigmoid":
     hiddenLayer = Dense(
       hiddenLayerSize, input_dim=inputLayerSize, activation="sigmoid", kernel_initializer=kKernelInitializer)
+  else:
+    hiddenLayer = Dense(
+      hiddenLayerSize, input_dim=inputLayerSize, activation="linear", kernel_initializer=kKernelInitializer)
 
   network.add(hiddenLayer)
 
@@ -80,8 +84,10 @@ def createNetwork(dataDirectory):
     outputLayer = Dense(outputLayerSize, activation="relu", kernel_initializer=kKernelInitializer)
   elif outputLayerActivationDescription == "LeakyReLU":
     outputLayer = Dense(outputLayerSize, activation=leakyReLU, kernel_initializer=kKernelInitializer)
-  else:
+  elif outputLayerActivationDescription == "Sigmoid":
     outputLayer = Dense(outputLayerSize, activation="sigmoid", kernel_initializer=kKernelInitializer)
+  else:
+    outputLayer = Dense(outputLayerSize, activation="linear", kernel_initializer=kKernelInitializer)
 
   network.add(outputLayer)
   

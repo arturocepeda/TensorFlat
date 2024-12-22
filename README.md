@@ -86,7 +86,7 @@ Let's now go through the properties, one by one, to see what each one of them de
 * `OutputLayerActivation`. The activation function used in the output layer.
 * `LeakyReLUAlpha`. The alpha value to use, in case the LeakyReLU activation function is used by one of the layers.
 
-The supported values for the activation function are *"Sigmoid"*, *"ReLU"* and *"LeakyReLU"*.
+The supported values for the activation function are *"Linear"*, *"Sigmoid"*, *"ReLU"* and *"LeakyReLU"*.
 
 #### Training
 
