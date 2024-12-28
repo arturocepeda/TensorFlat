@@ -787,8 +787,12 @@
       "Pixel_27_26",
       "Pixel_27_27"
     ],
-    "HiddenLayerSize": 128,
-    "HiddenLayerActivation": "ReLU",
+    "HiddenLayers": [
+      {
+        "HiddenLayerSize": 128,
+        "HiddenLayerActivation": "ReLU"
+      }
+    ],
     "Outputs": [
       "Digit_0",
       "Digit_1",

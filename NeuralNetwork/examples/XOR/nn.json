@@ -5,8 +5,12 @@
       "Input1",
       "Input2"
     ],
-    "HiddenLayerSize": 2,
-    "HiddenLayerActivation": "ReLU",
+    "HiddenLayers": [
+      {
+        "HiddenLayerSize": 2,
+        "HiddenLayerActivation": "ReLU"
+      }
+    ],
     "Outputs": [
       "Output"
     ],

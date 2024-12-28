@@ -48,11 +48,9 @@ def createNetwork(dataDirectory):
   descriptionData = loadNetworkDescriptionData(dataDirectory)
 
   inputs = descriptionData["Inputs"]
-  hiddenLayerSize = descriptionData["HiddenLayerSize"]
+  hiddenLayers = descriptionData["HiddenLayers"]
   outputs = descriptionData["Outputs"]
 
-  hiddenLayerActivationDescription = descriptionData["HiddenLayerActivation"]
-  assertActivationDescription(hiddenLayerActivationDescription)
   outputLayerActivationDescription = descriptionData["OutputLayerActivation"]
   assertActivationDescription(outputLayerActivationDescription)
 
@@ -65,20 +63,25 @@ def createNetwork(dataDirectory):
 
   network = Sequential()
 
-  if hiddenLayerActivationDescription == "ReLU":
-    hiddenLayer = Dense(
-      hiddenLayerSize, input_dim=inputLayerSize, activation="relu", kernel_initializer=kKernelInitializer)
-  elif hiddenLayerActivationDescription == "LeakyReLU":
-    hiddenLayer = Dense(
-      hiddenLayerSize, input_dim=inputLayerSize, activation=leakyReLU, kernel_initializer=kKernelInitializer)
-  elif hiddenLayerActivationDescription == "Sigmoid":
-    hiddenLayer = Dense(
-      hiddenLayerSize, input_dim=inputLayerSize, activation="sigmoid", kernel_initializer=kKernelInitializer)
-  else:
-    hiddenLayer = Dense(
-      hiddenLayerSize, input_dim=inputLayerSize, activation="linear", kernel_initializer=kKernelInitializer)
+  for hiddenLayer in hiddenLayers:
+    hiddenLayerSize = hiddenLayer["HiddenLayerSize"]
+    hiddenLayerActivationDescription = hiddenLayer["HiddenLayerActivation"]
+    assertActivationDescription(hiddenLayerActivationDescription)
 
-  network.add(hiddenLayer)
+    if hiddenLayerActivationDescription == "ReLU":
+      hiddenLayer = Dense(
+        hiddenLayerSize, input_dim=inputLayerSize, activation="relu", kernel_initializer=kKernelInitializer)
+    elif hiddenLayerActivationDescription == "LeakyReLU":
+      hiddenLayer = Dense(
+        hiddenLayerSize, input_dim=inputLayerSize, activation=leakyReLU, kernel_initializer=kKernelInitializer)
+    elif hiddenLayerActivationDescription == "Sigmoid":
+      hiddenLayer = Dense(
+        hiddenLayerSize, input_dim=inputLayerSize, activation="sigmoid", kernel_initializer=kKernelInitializer)
+    else:
+      hiddenLayer = Dense(
+        hiddenLayerSize, input_dim=inputLayerSize, activation="linear", kernel_initializer=kKernelInitializer)
+
+    network.add(hiddenLayer)
 
   if outputLayerActivationDescription == "ReLU":
     outputLayer = Dense(outputLayerSize, activation="relu", kernel_initializer=kKernelInitializer)
