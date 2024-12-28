@@ -30,39 +30,13 @@ float $Name$::activationLeakyReLU(float pValue)
 
 
 $Name$::$Name$()
-   : mHiddenLayerActivation(activation$HiddenLayerActivation$)
-   , mOutputLayerActivation(activation$OutputLayerActivation$)
 {
-   memset(mInputs, 0, sizeof(mInputs));
-   memset(mHiddenLayerValues, 0, sizeof(mHiddenLayerValues));
-   memset(mOutputs, 0, sizeof(mOutputs));
+$LayerValuesInitialization$
 }
 
 void $Name$::predict()
 {
-   for(size_t hiddenIndex = 0u; hiddenIndex < kHiddenLayerSize; hiddenIndex++)
-   {
-      float sum = kHiddenLayerBiases[hiddenIndex];
-
-      for(size_t inputIndex = 0u; inputIndex < kInputLayerSize; inputIndex++)
-      {
-         sum += mInputs[inputIndex] * kHiddenLayerWeights[hiddenIndex][inputIndex];
-      }
-
-      mHiddenLayerValues[hiddenIndex] = mHiddenLayerActivation(sum);
-   }
-
-   for(size_t outputIndex = 0u; outputIndex < kOutputLayerSize; outputIndex++)
-   {
-      float sum = kOutputLayerBiases[outputIndex];
-
-      for(size_t hiddenIndex = 0u; hiddenIndex < kHiddenLayerSize; hiddenIndex++)
-      {
-         sum += mHiddenLayerValues[hiddenIndex] * kOutputLayerWeights[outputIndex][hiddenIndex];
-      }
-
-      mOutputs[outputIndex] = mOutputLayerActivation(sum);
-   }
+$PredictionCode$
 }
 
 void $Name$::captureStart(const char* pDataDirectory)
@@ -170,12 +144,5 @@ void $Name$::test(const char* pDataDirectory)
    predictionFile.close();
 }
 
-const float $Name$::kHiddenLayerWeights[kHiddenLayerSize][kInputLayerSize] =
-$HiddenLayerWeights$;
-const float $Name$::kHiddenLayerBiases[kHiddenLayerSize] =
-$HiddenLayerBiases$;
 
-const float $Name$::kOutputLayerWeights[kOutputLayerSize][kHiddenLayerSize] =
-$OutputLayerWeights$;
-const float $Name$::kOutputLayerBiases[kOutputLayerSize] =
-$OutputLayerBiases$;
+$LayerSetupDefinitions$

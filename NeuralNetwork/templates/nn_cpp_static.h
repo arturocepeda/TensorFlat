@@ -16,9 +16,7 @@ private:
    static float activationLeakyReLU(float pValue);
 
 public:
-   static const size_t kInputLayerSize = $InputLayerSize$;
-   static const size_t kHiddenLayerSize = $HiddenLayerSize$;
-   static const size_t kOutputLayerSize = $OutputLayerSize$;
+$LayerSizeDeclarations$
 
    struct Inputs
    {
@@ -36,18 +34,9 @@ public:
    };
 
 private:
-   static const float kHiddenLayerWeights[kHiddenLayerSize][kInputLayerSize];
-   static const float kHiddenLayerBiases[kHiddenLayerSize];
+$LayerSetupDeclarations$
 
-   static const float kOutputLayerWeights[kOutputLayerSize][kHiddenLayerSize];
-   static const float kOutputLayerBiases[kOutputLayerSize];
-
-   float (*mHiddenLayerActivation)(float pValue);
-   float (*mOutputLayerActivation)(float pValue);
-
-   float mInputs[kInputLayerSize];
-   float mHiddenLayerValues[kHiddenLayerSize];
-   float mOutputs[kOutputLayerSize];
+$LayerMemberDeclarations$
 
    std::ofstream mInputsStream;
    std::ofstream mOutputsStream;
