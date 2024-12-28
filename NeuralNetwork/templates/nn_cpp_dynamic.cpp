@@ -2,12 +2,10 @@
 #include "$Name$.h"
 
 #include <cmath>
-#include <cstdio>
-#include <iomanip>
+#include <cstring>
 
 
 static const size_t kFilePathMaxSize = 256u;
-static const int kFileFloatPrecision = 5;
 
 
 float $Name$::activationLinear(float pValue)
@@ -53,20 +51,10 @@ void $Name$::captureStart(const char* pDataDirectory)
 
    mInputsStream = std::ofstream(inputsFilePath, std::ios_base::app);
 
-   if(mInputsStream.is_open())
-   {
-      mInputsStream << std::fixed << std::showpoint << std::setprecision(kFileFloatPrecision);
-   }
-
    char outputsFilePath[kFilePathMaxSize];
    snprintf(outputsFilePath, kFilePathMaxSize, "%s_outputs_", pDataDirectory);
 
    mOutputsStream = std::ofstream(outputsFilePath, std::ios_base::app);
-
-   if(mOutputsStream.is_open())
-   {
-      mOutputsStream << std::fixed << std::showpoint << std::setprecision(kFileFloatPrecision);
-   }
 }
 
 void $Name$::captureSample()
@@ -127,8 +115,6 @@ void $Name$::test(const char* pDataDirectory)
       inputsFile.close();
       return;
    }
-
-   predictionFile << std::fixed << std::showpoint << std::setprecision(kFileFloatPrecision);
 
    while(!inputsFile.eof())
    {
