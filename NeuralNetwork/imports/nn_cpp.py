@@ -254,8 +254,7 @@ def generateSourceFile(dataDirectory, templateFileName):
     staticLayerSetupDefinitions += getWeightsArrayString(network, hiddenLayerIndex) + ";\n"
     staticLayerSetupDefinitions += "const float " + name + "::k" + hiddenLayerString + "Biases[k" + hiddenLayerString + "Size] =\n"
     staticLayerSetupDefinitions += getBiasesArrayString(network, hiddenLayerIndex) + ";\n"
-    staticLayerSetupDefinitions += "float (*" + name + "::k" + hiddenLayerString + "Activation)(float) = "
-    staticLayerSetupDefinitions += "activation" + hiddenLayer["HiddenLayerActivation"] + ";\n\n"
+    staticLayerSetupDefinitions += "float (*" + name + "::k" + hiddenLayerString + "Activation)(float) = activation" + hiddenLayer["HiddenLayerActivation"] + ";\n\n"
 
     dynamicLoadSetupCode += kTab + kTab + "file.close();\n"
     dynamicLoadSetupCode += kTab + "}\n\n"
@@ -291,7 +290,8 @@ def generateSourceFile(dataDirectory, templateFileName):
   staticLayerSetupDefinitions += "const float " + name + "::kOutputLayerWeights[kOutputLayerSize][k" + hiddenLayerString + "Size] =\n"
   staticLayerSetupDefinitions += getWeightsArrayString(network, outputLayerIndex) + ";\n"
   staticLayerSetupDefinitions += "const float " + name + "::kOutputLayerBiases[kOutputLayerSize] =\n"
-  staticLayerSetupDefinitions += getBiasesArrayString(network, outputLayerIndex) + ";"
+  staticLayerSetupDefinitions += getBiasesArrayString(network, outputLayerIndex) + ";\n"
+  staticLayerSetupDefinitions += "float (*" + name + "::kOutputLayerActivation)(float) = activation" + outputLayerActivation + ";"
 
   dynamicLayerSetupInitialization += kTab + "memset(mOutputLayerWeights, 0, sizeof(mOutputLayerWeights));\n"
   dynamicLayerSetupInitialization += kTab + "memset(mOutputLayerBiases, 0, sizeof(mOutputLayerBiases));\n"
