@@ -30,108 +30,20 @@ float $Name$::activationLeakyReLU(float pValue)
 
 
 $Name$::$Name$()
-   : mHiddenLayerActivation(activation$HiddenLayerActivation$)
-   , mOutputLayerActivation(activation$OutputLayerActivation$)
 {
-   memset(mHiddenLayerWeights, 0, sizeof(mHiddenLayerWeights));
-   memset(mHiddenLayerBiases, 0, sizeof(mHiddenLayerBiases));
+$DynamicLayerSetupInitialization$
 
-   memset(mOutputLayerWeights, 0, sizeof(mOutputLayerWeights));
-   memset(mOutputLayerBiases, 0, sizeof(mOutputLayerBiases));
-
-   memset(mInputs, 0, sizeof(mInputs));
-   memset(mHiddenLayerValues, 0, sizeof(mHiddenLayerValues));
-   memset(mOutputs, 0, sizeof(mOutputs));
+$LayerValuesInitialization$
 }
 
 void $Name$::loadWeightsAndBiases(const char* pDataDirectory)
 {
-   char filePath[kFilePathMaxSize];
-   snprintf(filePath, kFilePathMaxSize, "%s_layer0_weights_", pDataDirectory);
-
-   std::ifstream file(filePath);
-
-   if(file.is_open())
-   {
-      for(size_t inputIndex = 0u; inputIndex < kInputLayerSize; inputIndex++)
-      {
-         for(size_t hiddenIndex = 0u; hiddenIndex < kHiddenLayerSize; hiddenIndex++)
-         {
-            file >> mHiddenLayerWeights[hiddenIndex][inputIndex];
-         }
-      }
-
-      file.close();
-   }
-
-   snprintf(filePath, kFilePathMaxSize, "%s_layer0_biases_", pDataDirectory);   
-   file = std::ifstream(filePath);
-
-   if(file.is_open())
-   {
-      for(size_t hiddenIndex = 0u; hiddenIndex < kHiddenLayerSize; hiddenIndex++)
-      {
-         file >> mHiddenLayerBiases[hiddenIndex];
-      }
-
-      file.close();
-   }
-
-   snprintf(filePath, kFilePathMaxSize, "%s_layer1_weights_", pDataDirectory);
-   file = std::ifstream(filePath);
-
-   if(file.is_open())
-   {
-      for(size_t hiddenIndex = 0u; hiddenIndex < kHiddenLayerSize; hiddenIndex++)
-      {
-         for(size_t outputIndex = 0u; outputIndex < kOutputLayerSize; outputIndex++)
-         {
-            file >> mOutputLayerWeights[outputIndex][hiddenIndex];
-         }
-      }
-
-      file.close();
-   }
-
-   snprintf(filePath, kFilePathMaxSize, "%s_layer1_biases_", pDataDirectory);   
-   file = std::ifstream(filePath);
-
-   if(file.is_open())
-   {
-      for(size_t outputIndex = 0u; outputIndex < kOutputLayerSize; outputIndex++)
-      {
-         file >> mOutputLayerBiases[outputIndex];
-      }
-
-      file.close();
-   }
+$DynamicLoadSetupCode$
 }
 
 void $Name$::predict()
 {
-   for(size_t hiddenIndex = 0u; hiddenIndex < kHiddenLayerSize; hiddenIndex++)
-   {
-      float sum = mHiddenLayerBiases[hiddenIndex];
-
-      for(size_t inputIndex = 0u; inputIndex < kInputLayerSize; inputIndex++)
-      {
-         sum += mInputs[inputIndex] * mHiddenLayerWeights[hiddenIndex][inputIndex];
-      }
-
-      mHiddenLayerValues[hiddenIndex] = mHiddenLayerActivation(sum);
-   }
-
-   for(size_t outputIndex = 0u; outputIndex < kOutputLayerSize; outputIndex++)
-   {
-      float sum = mOutputLayerBiases[outputIndex];
-
-      for(size_t hiddenIndex = 0u; hiddenIndex < kHiddenLayerSize; hiddenIndex++)
-      {
-         sum += mHiddenLayerValues[hiddenIndex] * mOutputLayerWeights[outputIndex][hiddenIndex];
-      }
-
-      mOutputs[outputIndex] = mOutputLayerActivation(sum);
-   }
+$DynamicPredictionCode$
 }
 
 void $Name$::captureStart(const char* pDataDirectory)

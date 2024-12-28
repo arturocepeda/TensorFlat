@@ -36,7 +36,7 @@ $LayerValuesInitialization$
 
 void $Name$::predict()
 {
-$PredictionCode$
+$StaticPredictionCode$
 }
 
 void $Name$::captureStart(const char* pDataDirectory)
@@ -145,4 +145,4 @@ void $Name$::test(const char* pDataDirectory)
 }
 
 
-$LayerSetupDefinitions$
+$StaticLayerSetupDefinitions$

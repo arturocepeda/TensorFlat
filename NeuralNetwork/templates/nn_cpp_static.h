@@ -34,7 +34,7 @@ $LayerSizeDeclarations$
    };
 
 private:
-$LayerSetupDeclarations$
+$StaticLayerSetupDeclarations$
 
 $LayerMemberDeclarations$
 

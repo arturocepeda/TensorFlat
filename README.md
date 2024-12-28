@@ -41,7 +41,7 @@ pip install scikit-learn
 ## Documentation
 ### Neural networks
 
-TensorFlat allows you to create neural networks with one hidden layer, train them and generate a C++ class out of the trained model, ready to be used for predictions. For each network, both the description and the training configuration need to be specified in a JSON file called `nn.json`, which looks like this:
+TensorFlat allows you to create neural networks with any number of hidden layers, train them and generate a C++ class out of the trained model, ready to be used for predictions. For each network, both the description and the training configuration need to be specified in a JSON file called `nn.json`, which looks like this:
 
 ```json
 {

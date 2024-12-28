@@ -16,9 +16,7 @@ private:
    static float activationLeakyReLU(float pValue);
 
 public:
-   static const size_t kInputLayerSize = $InputLayerSize$;
-   static const size_t kHiddenLayerSize = $HiddenLayerSize$;
-   static const size_t kOutputLayerSize = $OutputLayerSize$;
+$LayerSizeDeclarations$
 
    struct Inputs
    {
@@ -36,18 +34,9 @@ public:
    };
 
 private:
-   float mHiddenLayerWeights[kHiddenLayerSize][kInputLayerSize];
-   float mHiddenLayerBiases[kHiddenLayerSize];
+$DynamicLayerMemberDeclarations$
 
-   float mOutputLayerWeights[kOutputLayerSize][kHiddenLayerSize];
-   float mOutputLayerBiases[kOutputLayerSize];
-
-   float (*mHiddenLayerActivation)(float pValue);
-   float (*mOutputLayerActivation)(float pValue);
-
-   float mInputs[kInputLayerSize];
-   float mHiddenLayerValues[kHiddenLayerSize];
-   float mOutputs[kOutputLayerSize];
+$LayerMemberDeclarations$
 
    std::ofstream mInputsStream;
    std::ofstream mOutputsStream;
@@ -55,22 +44,7 @@ private:
 public:
    $Name$();
 
-   inline float* getHiddenLayerWeights()
-   {
-      return mHiddenLayerWeights[0];
-   }
-   inline float* getHiddenLayerBiases()
-   {
-      return mHiddenLayerBiases;
-   }
-   inline float* getOutputLayerWeights()
-   {
-      return mOutputLayerWeights[0];
-   }
-   inline float* getOutputLayerBiases()
-   {
-      return mOutputLayerBiases;
-   }
+$DynamicLayerSetupDeclarations$
 
    inline float* getInputs()
    {
