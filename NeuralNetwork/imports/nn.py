@@ -34,13 +34,8 @@ def loadNetworkTrainingParameters(dataDirectory):
   return trainingParameters
 
 
-def assertActivationDescription(description):
-  assert \
-    description == "ReLU" or \
-    description == "LeakyReLU" or \
-    description == "Sigmoid" or \
-    description == "Linear", \
-    "Unsupported activation function: '" + description + "'"
+def assertActivationDescription(activationFunctions, description):
+  assert description in activationFunctions, "Unsupported activation function: '" + description + "'"
 
 
 def createNetwork(dataDirectory):
@@ -51,11 +46,14 @@ def createNetwork(dataDirectory):
   hiddenLayers = descriptionData["HiddenLayers"]
   outputs = descriptionData["Outputs"]
 
-  outputLayerActivationDescription = descriptionData["OutputLayerActivation"]
-  assertActivationDescription(outputLayerActivationDescription)
+  activationFunctions = {}
+  activationFunctions["Linear"] = "linear"
+  activationFunctions["Sigmoid"] = "sigmoid"
+  activationFunctions["ReLU"] = "relu"
+  activationFunctions["LeakyReLU"] = keras.layers.LeakyReLU(alpha=descriptionData["LeakyReLUAlpha"])
 
-  leakyReLUAlpha = descriptionData["LeakyReLUAlpha"]
-  leakyReLU = keras.layers.LeakyReLU(alpha=leakyReLUAlpha)
+  outputLayerActivationDescription = descriptionData["OutputLayerActivation"]
+  assertActivationDescription(activationFunctions, outputLayerActivationDescription)
 
   # Define the neural network models
   inputLayerSize = len(inputs)
@@ -63,35 +61,28 @@ def createNetwork(dataDirectory):
 
   network = Sequential()
 
+  previousLayerSize = inputLayerSize
+
   for hiddenLayer in hiddenLayers:
     hiddenLayerSize = hiddenLayer["HiddenLayerSize"]
     hiddenLayerActivationDescription = hiddenLayer["HiddenLayerActivation"]
-    assertActivationDescription(hiddenLayerActivationDescription)
+    assertActivationDescription(activationFunctions, hiddenLayerActivationDescription)
 
-    if hiddenLayerActivationDescription == "ReLU":
-      hiddenLayer = Dense(
-        hiddenLayerSize, input_dim=inputLayerSize, activation="relu", kernel_initializer=kKernelInitializer)
-    elif hiddenLayerActivationDescription == "LeakyReLU":
-      hiddenLayer = Dense(
-        hiddenLayerSize, input_dim=inputLayerSize, activation=leakyReLU, kernel_initializer=kKernelInitializer)
-    elif hiddenLayerActivationDescription == "Sigmoid":
-      hiddenLayer = Dense(
-        hiddenLayerSize, input_dim=inputLayerSize, activation="sigmoid", kernel_initializer=kKernelInitializer)
-    else:
-      hiddenLayer = Dense(
-        hiddenLayerSize, input_dim=inputLayerSize, activation="linear", kernel_initializer=kKernelInitializer)
-
+    hiddenLayer = Dense(
+      hiddenLayerSize,
+      input_dim=previousLayerSize,
+      activation=activationFunctions[hiddenLayerActivationDescription],
+      kernel_initializer=kKernelInitializer
+    )
     network.add(hiddenLayer)
 
-  if outputLayerActivationDescription == "ReLU":
-    outputLayer = Dense(outputLayerSize, activation="relu", kernel_initializer=kKernelInitializer)
-  elif outputLayerActivationDescription == "LeakyReLU":
-    outputLayer = Dense(outputLayerSize, activation=leakyReLU, kernel_initializer=kKernelInitializer)
-  elif outputLayerActivationDescription == "Sigmoid":
-    outputLayer = Dense(outputLayerSize, activation="sigmoid", kernel_initializer=kKernelInitializer)
-  else:
-    outputLayer = Dense(outputLayerSize, activation="linear", kernel_initializer=kKernelInitializer)
+    previousLayerSize = hiddenLayerSize
 
+  outputLayer = Dense(
+    outputLayerSize,
+    activation=activationFunctions[outputLayerActivationDescription],
+    kernel_initializer=kKernelInitializer
+  )
   network.add(outputLayer)
   
   # Load weights and biases, if available
