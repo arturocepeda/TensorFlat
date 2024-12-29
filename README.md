@@ -68,7 +68,7 @@ TensorFlat allows you to create neural networks with any number of hidden layers
       "OutputValue02"
     ],
     "OutputLayerActivation": "LeakyReLU",
-    "LeakyReLUAlpha": 0.01
+    "LeakyReLUNegativeSlope": 0.01
   },
   "Training": {
     "TestSetRatio": 0.3,
@@ -89,7 +89,7 @@ Let's now go through the properties, one by one, to see what each one of them de
   * `HiddenLayerActivation`. The activation function used in that hidden layer.
 * `Outputs`. The list of output values.
 * `OutputLayerActivation`. The activation function used in the output layer.
-* `LeakyReLUAlpha`. The alpha value to use, in case the LeakyReLU activation function is used by one of the layers.
+* `LeakyReLUNegativeSlope`. The negative slope value to use, in case the LeakyReLU activation function is used by any of the layers.
 
 The supported values for the activation function are *"Linear"*, *"Sigmoid"*, *"ReLU"* and *"LeakyReLU"*.
 

@@ -50,7 +50,7 @@ def createNetwork(dataDirectory):
   activationFunctions["Linear"] = "linear"
   activationFunctions["Sigmoid"] = "sigmoid"
   activationFunctions["ReLU"] = "relu"
-  activationFunctions["LeakyReLU"] = keras.layers.LeakyReLU(alpha=descriptionData["LeakyReLUAlpha"])
+  activationFunctions["LeakyReLU"] = keras.layers.LeakyReLU(negative_slope=descriptionData["LeakyReLUNegativeSlope"])
 
   outputLayerActivationDescription = descriptionData["OutputLayerActivation"]
   assertActivationDescription(activationFunctions, outputLayerActivationDescription)

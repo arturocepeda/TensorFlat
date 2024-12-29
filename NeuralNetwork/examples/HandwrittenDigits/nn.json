@@ -806,7 +806,7 @@
       "Digit_9"
     ],
     "OutputLayerActivation": "Linear",
-    "LeakyReLUAlpha": 0.01
+    "LeakyReLUNegativeSlope": 0.01
   },
   "Training": {
     "TestSetRatio": 0.3,
