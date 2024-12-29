@@ -6,7 +6,7 @@ import os.path
 import pandas
 
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Input, Dense
 
 kKernelInitializer = "he_normal"
 
@@ -61,7 +61,8 @@ def createNetwork(dataDirectory):
 
   network = Sequential()
 
-  previousLayerSize = inputLayerSize
+  inputLayer = Input(shape=(inputLayerSize,))
+  network.add(inputLayer)
 
   for hiddenLayer in hiddenLayers:
     hiddenLayerSize = hiddenLayer["HiddenLayerSize"]
@@ -70,13 +71,10 @@ def createNetwork(dataDirectory):
 
     hiddenLayer = Dense(
       hiddenLayerSize,
-      input_dim=previousLayerSize,
       activation=activationFunctions[hiddenLayerActivationDescription],
       kernel_initializer=kKernelInitializer
     )
     network.add(hiddenLayer)
-
-    previousLayerSize = hiddenLayerSize
 
   outputLayer = Dense(
     outputLayerSize,
