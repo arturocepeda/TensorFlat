@@ -168,7 +168,7 @@ The dynamic version of the generated C++ class is mostly identical to the static
 TensorFlat is distributed with a *zlib* license, and is free to use for both non-commercial and commercial projects:
 
 ```
-Copyright (c) 2023-2024 Arturo Cepeda Pérez
+Copyright (c) 2023-2025 Arturo Cepeda Pérez
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
