@@ -791,6 +791,10 @@
       {
         "HiddenLayerSize": 128,
         "HiddenLayerActivation": "ReLU"
+      },
+      {
+        "HiddenLayerSize": 64,
+        "HiddenLayerActivation": "ReLU"
       }
     ],
     "Outputs": [
