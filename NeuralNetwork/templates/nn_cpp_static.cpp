@@ -22,8 +22,8 @@ float $Name$::activationReLU(float pValue)
 }
 float $Name$::activationLeakyReLU(float pValue)
 {
-   static const float kAlpha = $LeakyReLUAlpha$f;
-   return pValue > 0.0f ? pValue : (pValue * kAlpha);
+   static const float kNegativeSlope = $LeakyReLUNegativeSlope$f;
+   return pValue > 0.0f ? pValue : (pValue * kNegativeSlope);
 }
 
 

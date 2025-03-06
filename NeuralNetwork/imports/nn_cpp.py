@@ -192,7 +192,7 @@ def generateSourceFile(dataDirectory, templateFileName):
   
   name = descriptionData["Name"]
   hiddenLayers = descriptionData["HiddenLayers"]
-  leakyReLUAlpha = descriptionData["LeakyReLUAlpha"]
+  leakyReLUNegativeSlope = descriptionData["LeakyReLUNegativeSlope"]
   outputLayerActivation = descriptionData["OutputLayerActivation"]
 
   network = nn.createNetwork(dataDirectory)
@@ -347,7 +347,7 @@ def generateSourceFile(dataDirectory, templateFileName):
 
   # Replace variables
   generatedContent = templateContent.replace("$Name$", name)
-  generatedContent = generatedContent.replace("$LeakyReLUAlpha$", str(leakyReLUAlpha))
+  generatedContent = generatedContent.replace("$LeakyReLUNegativeSlope$", str(leakyReLUNegativeSlope))
   generatedContent = generatedContent.replace("$LayerValuesInitialization$", layerValuesInitialization)
   generatedContent = generatedContent.replace("$StaticPredictionCode$", predictionCode.replace("$Prefix$", "k"))
   generatedContent = generatedContent.replace("$StaticLayerSetupDefinitions$", staticLayerSetupDefinitions)
